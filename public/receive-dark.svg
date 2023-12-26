@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 808.93 443.76">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        letter-spacing: 0em;
+      }
+
+      .cls-3 {
+        font-family: Satoshi-Bold, Satoshi;
+        font-size: 69px;
+        font-weight: 700;
+      }
+
+      .cls-2, .cls-4, .cls-5, .cls-6 {
+        fill: #00a992;
+        stroke: #00a992;
+      }
+
+      .cls-2, .cls-4, .cls-5, .cls-6, .cls-7 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-8 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-5 {
+        letter-spacing: 0em;
+      }
+
+      .cls-6 {
+        letter-spacing: .02em;
+      }
+
+      .cls-9 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-10 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-7 {
+        fill: #fff;
+        stroke: #fff;
+      }
+
+      .cls-11 {
+        fill: #231f20;
+      }
+
+      .cls-12 {
+        letter-spacing: -.02em;
+      }
+    </style>
+  </defs>
+  <rect class="cls-7" x=".5" y=".5" width="807.93" height="368.38" rx="55.17" ry="55.17"/>
+  <path class="cls-7" d="m13.42,223.27h198.17c10.75,0,16.1,13.03,8.46,20.58L21.88,439.76c-7.6,7.51-20.49,2.13-20.49-8.55v-195.91c0-6.64,5.39-12.03,12.03-12.03Z"/>
+  <text class="cls-3" transform="translate(170.6 125.24)"><tspan class="cls-4" x="0" y="0">Ce</tspan><tspan class="cls-6" x="90.8" y="0">r</tspan><tspan class="cls-2" x="119.3" y="0">tify </tspan><tspan class="cls-11" x="238.39" y="0">or </tspan><tspan class="cls-4" x="325.26" y="0">De</tspan><tspan class="cls-5" x="414.75" y="0">n</tspan><tspan class="cls-4" x="454.7" y="0">y</tspan><tspan class="cls-11"><tspan class="cls-9" x="27.81" y="82.8">y</tspan><tspan class="cls-8" x="62.79" y="82.8">o</tspan><tspan x="103.08" y="82.8">ur </tspan><tspan class="cls-12" x="189.06" y="82.8">r</tspan><tspan class="cls-1" x="215" y="82.8">ecei</tspan><tspan class="cls-10" x="346.92" y="82.8">v</tspan><tspan x="382.25" y="82.8">ed</tspan></tspan><tspan class="cls-11"><tspan x="77.59" y="165.6">messages!</tspan></tspan></text>
+</svg>

@@ -9,7 +9,7 @@ const config = {
   useSystemColorMode: false,
 };
 
-const theme = extendTheme({ config, colors: { "main": "#7647BF" } });
+const theme = extendTheme({ config, colors: { "main": "#9f30cd" } });
 const activeChain = process.env.NEXT_PUBLIC_APP_CHAIN || "binance-testnet";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {

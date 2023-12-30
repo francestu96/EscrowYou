@@ -91,7 +91,7 @@ export default function Footer() {
           <Stack align={'flex-start'}>
             <ListHeader>Developer</ListHeader>
             <Text>Powered By</Text>
-            <a href={'https://t.me/justinternetmoneyz'} target='_blank' style={{ color: "#7647BF" }} rel="noreferrer">Kira</a>
+            <a href={'https://t.me/justinternetmoneyz'} target='_blank' style={{ color: "#9f30cd" }} rel="noreferrer">Kira</a>
           </Stack>
           <Stack align={'flex-start'}>
             <ListHeader>Stay up to date</ListHeader>

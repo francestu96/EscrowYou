@@ -75,7 +75,7 @@ const EscrowList = ({ payments, sent, web3button }: { payments: EscrowModel[], s
                       >
                         <Tooltip hasArrow label='Approve' bg='gray.300' color='black' placement="top">
                           <span>
-                            <AiOutlineCheckCircle className="icons" style={{color: "#7647BF"}}/>
+                            <AiOutlineCheckCircle className="icons" style={{color: "#9f30cd"}}/>
                           </span>
                         </Tooltip>
                       </Web3Button>

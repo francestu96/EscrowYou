@@ -9,7 +9,7 @@ import NavItem from './NavItem';
 
 const NAV_LINKS: ISubNav[] = [
   { label: "Home", href: "/" },
-  { label: "Enter DAPP", href: "/dapp" },
+  { label: "DAPP", href: "/dapp" },
   { label: "Litepaper", href_blank: "/Litepaper_v1.0.pdf" },
   {
     label: "About",

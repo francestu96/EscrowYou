@@ -35,7 +35,7 @@ const About = () => {
             </ChakraBox>
           </VStack>
           <ChakraBox width={["100%", "100%", "100%", "50%"]} display="flex" justifyContent="center" alignContent="center" flexWrap="wrap" animate={isInView ? logoAnimation : 'none' } transition={{ duration: "2", ease: "easeInOut" }} opacity="0">
-            <Image src={"/logo-dark.png"} boxSize={["2xs", "xs", "xs", "sm"]} alt="Escrow.YOU" objectFit="contain"/>
+            <Image src={"/logo.png"} boxSize={["2xs", "xs", "xs", "sm"]} alt="Escrow.YOU" objectFit="contain"/>
           </ChakraBox>
         </Stack>
           <ReactPlayer url="https://certifiedprotocol.s3.eu-central-1.amazonaws.com/escrow_you.mp4" width="100%" height="100%" controls/>

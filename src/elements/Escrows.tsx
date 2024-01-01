@@ -9,7 +9,7 @@ import Filter from './Filter';
 import { useEffect, useState } from 'react';
 import { EscrowModel } from 'utils/EscrowModel'
 import { getEscrowTxs } from 'utils/getEscrowTxs';
-import PaymentList from './EscrowList';
+import EscrowList from './EscrowList';
 
 const Escrows = () => {
   const toast = useToast();
@@ -34,11 +34,11 @@ const Escrows = () => {
   useEffect(() => {
     const init = async () => {
       try{
-        const payments = await getEscrowTxs(address!);
-        
-        let received = payments.filter((x: EscrowModel) => x.data && parseInt(x.topics[2]) == parseInt(address!));
-        let sent = payments.filter((x: EscrowModel) => x.data && parseInt(x.topics[1]) == parseInt(address!));
-        let certify = payments.filter((x: EscrowModel) => x.data && parseInt(x.topics[3]) == parseInt(address!));
+        const escrows = await getEscrowTxs(address!);
+
+        let received = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[2]) == parseInt(address!));
+        let sent = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[1]) == parseInt(address!));
+        let certify = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[3]) == parseInt(address!));
         setReceivedMessages(received);
         setSentMessages(sent);
         setCertifyMessages(certify);
@@ -63,8 +63,8 @@ const Escrows = () => {
     setIsLoading(true);
     setTimeout(async () => {
         try{
-            const payments = await getEscrowTxs(address!);
-            setFilteredSentMessages(payments.filter((x: EscrowModel) => x.data && parseInt(x.topics[1]) == parseInt(address!)));
+            const escrows = await getEscrowTxs(address!);
+            setFilteredSentMessages(escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[1]) == parseInt(address!)));
             toast({description: "Transaction success", status: 'success', position: "bottom-right", isClosable: true, duration: 3000});
             setInputAmount(0);
             setCertifierAddress("");
@@ -139,11 +139,11 @@ const Escrows = () => {
                 </HStack>
                 <Web3Button 
                   style={{width: "20%", maxHeight: "2.5rem", color: colorMode == "dark" ? "#171923" : "white", backgroundColor: colorMode == "dark" ? "white" : "#171923"}} 
-                  contractAddress={process.env.NEXT_PUBLIC_PAYMENTS_CONTRACT_ADDRESS || ""}
+                  contractAddress={process.env.NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS || ""}
                   contractAbi={ESCROW_ABI}
                   onError={(e) => {
-                    if(e.message.includes("Certifier address not valid for this payment")){
-                      toast({description: "Certifier address not valid for this payment", status: 'error', position: "top", isClosable: true, duration: 3000});
+                    if(e.message.includes("Certifier address not valid for this escrow")){
+                      toast({description: "Certifier address not valid for this escrow", status: 'error', position: "top", isClosable: true, duration: 3000});
                     }
                     else if(!certifierAddressError && !receiverAddressError && !messageError){
                       console.log(e);
@@ -152,7 +152,7 @@ const Escrows = () => {
                   onSuccess={async () => !certifierAddressError && !receiverAddressError && !messageError ? success() : null}
                   action={async (contract) => {
                     if(verifyInputs()){
-                        await contract.call("sendPayment", [receiverAddress, certifierAddress, feeAmount, inputMessage], { value: BigInt(inputAmount! * 10**18)});
+                        await contract.call("sendEscrow", [receiverAddress, certifierAddress, feeAmount, inputMessage], { value: BigInt(inputAmount! * 10**18)});
                     }
                   }}>
                   Pay
@@ -173,7 +173,7 @@ const Escrows = () => {
                   <Input value={certifierAddress} onChange={(e) => {setCertifierAddressError(false); setCertifierAddress(e.target.value)}} placeholder="Certifier address" borderColor={certifierAddressError ? "red" : undefined} backgroundColor={colorMode == "dark" ? "gray.800" : "white"}/>
                 </InputGroup>
               </HStack>
-              <Textarea value={inputMessage} onChange={(e) => {setMessageError(false); setInputMessage(e.target.value)}} placeholder="Payment reason to be escrow_you..." borderColor={messageError ? "red" : undefined} backgroundColor={colorMode == "dark" ? "gray.800" : "white"}/>
+              <Textarea value={inputMessage} onChange={(e) => {setMessageError(false); setInputMessage(e.target.value)}} placeholder="Payment conditions to be verfied..." borderColor={messageError ? "red" : undefined} backgroundColor={colorMode == "dark" ? "gray.800" : "white"}/>
             </VStack>
 
             <Filter received={receivedMessages || []} sent={sentMessages || []} certify={certifyMessages || []} setFilteredReceived={setFilteredReceivedMessages} setFilteredSent={setFilteredSentMessages} setFilteredCertify={setFilteredCertifyMessages}/>
@@ -194,7 +194,7 @@ const Escrows = () => {
                         ))}
                       </Box>
                     ) : (
-                      <PaymentList payments={filteredReceivedMessages || []} sent={false} web3button={false}/>
+                      <EscrowList escrows={filteredReceivedMessages || []} sent={false} web3button={false}/>
                     )
                   }
                 </TabPanel>
@@ -208,7 +208,7 @@ const Escrows = () => {
                         ))}
                       </Box>
                     ) : (
-                      <PaymentList payments={filteredSentMessages || []} sent={true} web3button={false}/>
+                      <EscrowList escrows={filteredSentMessages || []} sent={true} web3button={false}/>
                     )
                   }
                 </TabPanel>
@@ -222,7 +222,7 @@ const Escrows = () => {
                         ))}
                       </Box>
                     ) : (
-                      <PaymentList payments={filteredCertifyMessages || []} sent={false} web3button={true}/>
+                      <EscrowList escrows={filteredCertifyMessages || []} sent={false} web3button={true}/>
                     )
                   }
                 </TabPanel>

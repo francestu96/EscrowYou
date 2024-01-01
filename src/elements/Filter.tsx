@@ -9,7 +9,7 @@ import { EscrowModel } from "utils/EscrowModel"
 const Filter = ({ received, sent, setFilteredReceived, setFilteredSent, certify=undefined, setFilteredCertify=undefined, disabled=false }: { received: EscrowModel[], sent: EscrowModel[], setFilteredReceived: Dispatch<SetStateAction<EscrowModel[] | undefined>>, setFilteredSent: Dispatch<SetStateAction<EscrowModel[] | undefined>>, certify?: EscrowModel[] | undefined, setFilteredCertify?: Dispatch<SetStateAction<EscrowModel[] | undefined>> | undefined, disabled?: boolean }) => {
   const [show, setShow] = useState(false);
   const bgColor = "main";
-  const hoverBgColor = "#02c4aa";
+  const hoverBgColor = "#8F30cd";
 
   const [inputText, setInputText] = useState<string>("");
   const [inputDateFrom, setInputDateFrom] = useState<string>("");

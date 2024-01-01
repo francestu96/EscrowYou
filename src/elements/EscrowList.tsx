@@ -9,19 +9,19 @@ import { ImCross } from "react-icons/im";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 
-const EscrowList = ({ payments, sent, web3button }: { payments: EscrowModel[], sent: boolean, web3button: boolean }) => {
+const EscrowList = ({ escrows, sent, web3button }: { escrows: EscrowModel[], sent: boolean, web3button: boolean }) => {
   const toast = useToast();
   const { colorMode } = useColorMode();
   const [refresh, setRefresh] = useState<boolean>(false);
 
   return (
     <>
-    { !payments.length && (
+    { !escrows.length && (
         <Text fontFamily="satoshi-bold" fontSize="lg" align="center">No Payments Found</Text >
       )
     }
     {
-      payments.map((message: EscrowModel) => (
+      escrows.map((message: EscrowModel) => (
         <Card mt="5" key={message.transactionHash} borderWidth="thin" borderColor={message.approved === true ? "main" : (message.approved === false ? "red.700" : "inherit")}>
           <CardHeader py="2">
             { sent ? (
@@ -58,7 +58,7 @@ const EscrowList = ({ payments, sent, web3button }: { payments: EscrowModel[], s
                   <HStack>
                     <HStack display={web3button && message.approved === undefined ? "flex" : "none"}>
                       <Web3Button 
-                        contractAddress={process.env.NEXT_PUBLIC_PAYMENTS_CONTRACT_ADDRESS || ""}
+                        contractAddress={process.env.NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS || ""}
                         contractAbi={ESCROW_ABI}
                         style={{padding: "0", minWidth: "unset", background: "transparent"}}
                         onError={(e) => {
@@ -80,7 +80,7 @@ const EscrowList = ({ payments, sent, web3button }: { payments: EscrowModel[], s
                         </Tooltip>
                       </Web3Button>
                       <Web3Button
-                        contractAddress={process.env.NEXT_PUBLIC_PAYMENTS_CONTRACT_ADDRESS || ""}
+                        contractAddress={process.env.NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS || ""}
                         contractAbi={ESCROW_ABI}
                         style={{padding: "0", minWidth: "unset", background: "transparent"}}
                         onError={(e) => {

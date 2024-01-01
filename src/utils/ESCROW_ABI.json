@@ -1,33 +1,5 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address payable",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint16",
-				"name": "paymentIndex",
-				"type": "uint16"
-			},
-			{
-				"internalType": "bool",
-				"name": "result",
-				"type": "bool"
-			}
-		],
-		"name": "certify",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
@@ -56,7 +28,7 @@
 			{
 				"indexed": false,
 				"internalType": "uint16",
-				"name": "paymentIndex",
+				"name": "escrowIndex",
 				"type": "uint16"
 			},
 			{
@@ -93,7 +65,7 @@
 			{
 				"indexed": false,
 				"internalType": "uint16",
-				"name": "paymentIndex",
+				"name": "escrowIndex",
 				"type": "uint16"
 			},
 			{
@@ -109,120 +81,33 @@
 				"type": "string"
 			}
 		],
-		"name": "Payment",
+		"name": "Escrow",
 		"type": "event"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "address",
+				"internalType": "address payable",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address payable",
 				"name": "to",
 				"type": "address"
 			},
 			{
-				"internalType": "uint64",
-				"name": "paymentIndex",
-				"type": "uint64"
-			}
-		],
-		"name": "releaseFunds",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
+				"internalType": "uint16",
+				"name": "escrowIndex",
+				"type": "uint16"
 			},
 			{
-				"internalType": "address",
-				"name": "certifier",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "certifierFees",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "message",
-				"type": "string"
+				"internalType": "bool",
+				"name": "result",
+				"type": "bool"
 			}
 		],
-		"name": "sendPayment",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "addr",
-				"type": "address"
-			}
-		],
-		"name": "setCFDAddress",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "threshold",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint8",
-				"name": "fee",
-				"type": "uint8"
-			}
-		],
-		"name": "setCFDHoldLayer1",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "threshold",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint8",
-				"name": "fee",
-				"type": "uint8"
-			}
-		],
-		"name": "setCFDHoldLayer2",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint32",
-				"name": "timeInSec",
-				"type": "uint32"
-			}
-		],
-		"name": "setReleaseTime",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "withdraw",
+		"name": "certify",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -236,7 +121,7 @@
 			},
 			{
 				"internalType": "uint64",
-				"name": "paymentIndex",
+				"name": "escrowIndex",
 				"type": "uint64"
 			}
 		],
@@ -252,42 +137,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "holdCFDTier1",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "threshold",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint8",
-				"name": "fee",
-				"type": "uint8"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "holdCFDTier2",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "threshold",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint8",
-				"name": "fee",
-				"type": "uint8"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -300,7 +149,7 @@
 				"type": "address"
 			}
 		],
-		"name": "paymentsCounter",
+		"name": "escrowsCounter",
 		"outputs": [
 			{
 				"internalType": "uint16",
@@ -312,6 +161,42 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "holdEYOUTier1",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "threshold",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint8",
+				"name": "fee",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "holdEYOUTier2",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "threshold",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint8",
+				"name": "fee",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -329,7 +214,7 @@
 				"type": "uint256"
 			}
 		],
-		"name": "pendingPayments",
+		"name": "pendingEscrows",
 		"outputs": [
 			{
 				"internalType": "address",
@@ -356,6 +241,24 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint64",
+				"name": "escrowIndex",
+				"type": "uint64"
+			}
+		],
+		"name": "releaseFunds",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "releaseTime",
 		"outputs": [
@@ -366,6 +269,103 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "certifier",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "certifierFees",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"name": "sendEscrow",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "addr",
+				"type": "address"
+			}
+		],
+		"name": "setEYOUAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "threshold",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint8",
+				"name": "fee",
+				"type": "uint8"
+			}
+		],
+		"name": "setEYOUHoldLayer1",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "threshold",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint8",
+				"name": "fee",
+				"type": "uint8"
+			}
+		],
+		"name": "setEYOUHoldLayer2",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint32",
+				"name": "timeInSec",
+				"type": "uint32"
+			}
+		],
+		"name": "setReleaseTime",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

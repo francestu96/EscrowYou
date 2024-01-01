@@ -1,6 +1,6 @@
 import { Box, Button, HStack, Heading, Input, InputGroup, InputLeftElement, Tab, TabList, TabPanel, TabPanels, Tabs, Tooltip, VStack, useColorMode, useToast } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
-import PaymentList from 'elements/EscrowList';
+import EscrowList from 'elements/EscrowList';
 import { useState } from 'react';
 import { FaRegFaceMehBlank } from 'react-icons/fa6';
 import { EscrowModel } from 'utils/EscrowModel'
@@ -36,11 +36,11 @@ const NoticeboardEscrows = () => {
     setHasSearched(true)
     setIsLoading(true);
     try{
-      const payments = await getEscrowTxs(inputAddress);
+      const escrows = await getEscrowTxs(inputAddress);
       
-      let received = payments.filter((x: EscrowModel) => x.data && parseInt(x.topics[2]) == parseInt(inputAddress));
-      let sent = payments.filter((x: EscrowModel) => x.data && parseInt(x.topics[1]) == parseInt(inputAddress));
-      let certify = payments.filter((x: EscrowModel) => x.data && parseInt(x.topics[3]) == parseInt(inputAddress));
+      let received = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[2]) == parseInt(inputAddress));
+      let sent = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[1]) == parseInt(inputAddress));
+      let certify = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[3]) == parseInt(inputAddress));
 
       setReceivedMessages(received);
       setSentMessages(sent);
@@ -65,7 +65,7 @@ const NoticeboardEscrows = () => {
             <InputLeftElement pointerEvents='none'>
               <AiOutlineSearch/>
             </InputLeftElement>
-            <Input value={inputAddress} onChange={(e) => {setAddressError(false); setInputAddress(e.target.value)}} placeholder="Find address payments" borderColor={addressError ? "red" : undefined} backgroundColor={colorMode == "dark" ? "gray.800" : "white"}/>
+            <Input value={inputAddress} onChange={(e) => {setAddressError(false); setInputAddress(e.target.value)}} placeholder="Find address escrows" borderColor={addressError ? "red" : undefined} backgroundColor={colorMode == "dark" ? "gray.800" : "white"}/>
           </InputGroup>
           <Button rightIcon={<AiOutlineSearch />} backgroundColor={"main"} w="24%" fontSize={["xs", "sm", "md", "md"]} onClick={search}>Search</Button>
         </HStack>
@@ -92,7 +92,7 @@ const NoticeboardEscrows = () => {
                         ))}
                       </Box>
                     ) : (
-                      <PaymentList payments={filteredReceivedMessages || []} sent={false} web3button={false}/>
+                      <EscrowList escrows={filteredReceivedMessages || []} sent={false} web3button={false}/>
                     )
                   }
                 </TabPanel>
@@ -106,7 +106,7 @@ const NoticeboardEscrows = () => {
                         ))}
                       </Box>
                     ) : (
-                      <PaymentList payments={filteredSentMessages || []} sent={true} web3button={false}/>
+                      <EscrowList escrows={filteredSentMessages || []} sent={true} web3button={false}/>
                     )
                   }
                 </TabPanel>
@@ -120,7 +120,7 @@ const NoticeboardEscrows = () => {
                         ))}
                       </Box>
                     ) : (
-                      <PaymentList payments={filteredCertifyMessages || []} sent={false} web3button={false}/>
+                      <EscrowList escrows={filteredCertifyMessages || []} sent={false} web3button={false}/>
                     )
                   }
                 </TabPanel>

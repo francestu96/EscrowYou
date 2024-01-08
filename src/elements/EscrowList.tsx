@@ -168,8 +168,8 @@ const EscrowList = ({ escrows, sent, web3button }: { escrows: EscrowModel[], sen
                             isDisabled={Number(escrow.redeemTime) != 0}
                             style={{ maxHeight: "2.5rem", color: colorMode == "dark" ? "#171923" : "white", backgroundColor: Number(escrow.redeemTime) != 0 ? "#C53030" : (colorMode == "dark" ? "white" : "#171923")}} 
                             onError={(e) => {
-                                if(e.message.includes("Certifier address not valid for this payment")){
-                                    toast({description: "Certifier address not valid for this payment", status: 'error', position: "top", isClosable: true, duration: 3000});
+                                if(e.message.includes("Release time")){
+                                    toast({description: "Release time still in progress...", status: 'error', position: "top", isClosable: true, duration: 3000});
                                 }
                                 else{
                                     toast({description: "Transaction rejected", status: 'error', position: "bottom-right", isClosable: true, duration: 3000});
@@ -177,9 +177,9 @@ const EscrowList = ({ escrows, sent, web3button }: { escrows: EscrowModel[], sen
                                 }
                             }}
                             onSuccess={() => {escrow.approved = true; setRefresh(!refresh)}}
-                            action={async (contract) => await contract.call("approve", ["0x" + escrow.topics[1].substring(26), "0x" + escrow.topics[2].substring(26), escrow.escrowCounter, true])}
+                            action={async (contract) => await contract.call("releaseFunds", ["0x" + escrow.topics[2].substring(26), escrow.escrowCounter])}
                         >
-                            Redeem
+                            Release
                             {
                                 Number(escrow.redeemTime) != 0 && " on " + new Date(new Date().getTime() + Number(escrow.redeemTime) * 1000).toLocaleDateString(undefined, { hour: "2-digit", minute: "2-digit", hourCycle: "h24"})
                             }

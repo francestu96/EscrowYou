@@ -21,7 +21,7 @@ const decodeCertifyData = (encoded: string) => {
     }
   }
 
-export const getEscrowTxs = async (address: string, contract: any): Promise<EscrowModel[]> => {
+export const getEscrowTxs = async (address: string, contract?: any): Promise<EscrowModel[]> => {
   const keccak256 = require('keccak256');
   const escrowSign = ESCROW_ABI.find(x => x.name == "Escrow");
   const approveSign = ESCROW_ABI.find(x => x.name == "Approve");
@@ -50,7 +50,7 @@ export const getEscrowTxs = async (address: string, contract: any): Promise<Escr
     x.escrowCounter = decodedData.escrowCounter;
     x.data = decodedData.data;
     x.amount = decodedData.amount;
-    x.redeemTime = await contract.call("checkReleaseTime", ["0x" + x.topics[2].substring(26), x.escrowCounter], {from: address});
+    x.redeemTime = contract ? await contract.call("checkReleaseTime", ["0x" + x.topics[2].substring(26), x.escrowCounter], {from: address}) : undefined;
   }));
 
   const approveEvents = eventsRes.data.result.filter((x: EscrowModel) => x.topics[0] == "0x" + keccak256(approveSign?.name + "(" + approveSign?.inputs.map(x => x.type).join(",") + ")").toString("hex"));

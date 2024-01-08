@@ -1,5 +1,5 @@
 import { Box, HStack, Input, InputGroup, InputLeftElement, VStack, Image, Heading, useColorMode, Tooltip, Tab, TabList, TabPanel, TabPanels, Tabs, Textarea, useToast } from '@chakra-ui/react';
-import { Web3Button, useAddress } from '@thirdweb-dev/react';
+import { Web3Button, useAddress, useContract } from '@thirdweb-dev/react';
 import ESCROW_ABI from '../utils/ESCROW_ABI.json'
 import { FaRegAddressBook } from 'react-icons/fa';
 import { BsCurrencyDollar } from 'react-icons/bs';
@@ -30,15 +30,17 @@ const Escrows = () => {
   const [receiverAddressError, setReceiverAddressError] = useState<boolean>();
   const [certifierAddressError, setCertifierAddressError] = useState<boolean>();
   const [messageError, setMessageError] = useState<boolean>();
+  const { contract } = useContract(process.env.NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS, ESCROW_ABI);
 
   useEffect(() => {
     const init = async () => {
       try{
-        const escrows = await getEscrowTxs(address!);
+        const escrows = await getEscrowTxs(address!, contract);
 
         let received = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[2]) == parseInt(address!));
         let sent = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[1]) == parseInt(address!));
         let certify = escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[3]) == parseInt(address!));
+
         setReceivedMessages(received);
         setSentMessages(sent);
         setCertifyMessages(certify);
@@ -63,7 +65,8 @@ const Escrows = () => {
     setIsLoading(true);
     setTimeout(async () => {
         try{
-            const escrows = await getEscrowTxs(address!);
+            const escrows = await getEscrowTxs(address!, contract);
+
             setFilteredSentMessages(escrows.filter((x: EscrowModel) => x.data && parseInt(x.topics[1]) == parseInt(address!)));
             toast({description: "Transaction success", status: 'success', position: "bottom-right", isClosable: true, duration: 3000});
             setInputAmount(0);
@@ -181,7 +184,7 @@ const Escrows = () => {
               <TabList>
                 <Tab _selected={{color: "main", borderColor: "main"}}>Received</Tab>
                 <Tab _selected={{color: "main", borderColor: "main"}}>Sent</Tab>
-                <Tab _selected={{color: "main", borderColor: "main"}}>Certify</Tab>
+                <Tab _selected={{color: "main", borderColor: "main"}}>Verify</Tab>
               </TabList>
               <TabPanels>
                 <TabPanel>

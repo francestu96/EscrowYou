@@ -21,7 +21,7 @@ const decodeCertifyData = (encoded: string) => {
     }
   }
 
-export const getEscrowTxs = async (inputAddress: string): Promise<EscrowModel[]> => {
+export const getEscrowTxs = async (address: string, contract: any): Promise<EscrowModel[]> => {
   const keccak256 = require('keccak256');
   const escrowSign = ESCROW_ABI.find(x => x.name == "Escrow");
   const approveSign = ESCROW_ABI.find(x => x.name == "Approve");
@@ -32,9 +32,9 @@ export const getEscrowTxs = async (inputAddress: string): Promise<EscrowModel[]>
     fromBlock: process.env.NEXT_PUBLIC_ESCROW_CONTRACT_ORIGIN_BLOCK || 0,
     toBlock: "latest",
     address: process.env.NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS || "",
-    topic1: "0x" + inputAddress?.substring(2).padStart(64, '0'),
-    topic2: "0x" + inputAddress?.substring(2).padStart(64, '0'),
-    topic3: "0x" + inputAddress?.substring(2).padStart(64, '0'),
+    topic1: "0x" + address?.substring(2).padStart(64, '0'),
+    topic2: "0x" + address?.substring(2).padStart(64, '0'),
+    topic3: "0x" + address?.substring(2).padStart(64, '0'),
     topic1_2_opr: "or",
     topic2_3_opr: "or",
     apikey: process.env.NEXT_PUBLIC_LOGS_API_KEY || ""
@@ -45,12 +45,13 @@ export const getEscrowTxs = async (inputAddress: string): Promise<EscrowModel[]>
     throw new Error("too many requests, retry in few minutes");
   }
   const escrowEvents = eventsRes.data.result.filter((x: EscrowModel) => x.topics[0] == "0x" + keccak256(escrowSign?.name + "(" + escrowSign?.inputs.map(x => x.type).join(",") + ")").toString("hex"));
-  escrowEvents.map((x: EscrowModel) => {
+  await Promise.all(escrowEvents.map(async (x: EscrowModel) => {
     const decodedData = decodeEscrowData(x.data!);
     x.escrowCounter = decodedData.escrowCounter;
     x.data = decodedData.data;
     x.amount = decodedData.amount;
-  });
+    x.redeemTime = await contract.call("checkReleaseTime", ["0x" + x.topics[2].substring(26), x.escrowCounter], {from: address});
+  }));
 
   const approveEvents = eventsRes.data.result.filter((x: EscrowModel) => x.topics[0] == "0x" + keccak256(approveSign?.name + "(" + approveSign?.inputs.map(x => x.type).join(",") + ")").toString("hex"));
   approveEvents.map((x: EscrowModel) => {

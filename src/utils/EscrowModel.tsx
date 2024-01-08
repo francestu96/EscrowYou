@@ -13,4 +13,5 @@ export type EscrowModel = {
     escrowCounter: number | undefined,
     transactionHash: string,
     transactionIndex: string,
+    redeemTime: BigInt
 };

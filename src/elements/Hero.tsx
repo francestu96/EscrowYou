@@ -9,10 +9,10 @@ const Hero = () => {
     shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
   })
   return (
-    <Container maxWidth="unset" p="10" minH="85vh" display="flex" backgroundImage="background.jpg" backgroundSize="cover" justifyContent="center">
-        <VStack width="50%" justifyContent="center">
+    <Container maxWidth="unset" p="10" minH="85vh" display="flex" backgroundImage={["background_mobile.jpg", "background.jpg"]} backgroundSize="cover" justifyContent="center">
+        <VStack width={["100%", "80%", "50%"]} justifyContent="center">
             <ChakraBox backgroundColor="rgb(23,25,35,0.8)" borderWidth="thin" borderRadius="3xl" p="5" mb="5" fontFamily="Satoshi-Bold" animate={{opacity: [0, 1], filter: ["blur(12px)", "blur(0px)"] }} transition={{duration: "1.5", ease: "easeInOut", delay: "0.5"}} opacity="0">
-                <Text fontSize={["6xl", "7xl", "8xl"]} background="linear-gradient(to right, white, cornflowerblue, #9f30cd);" fill="transparent" backgroundClip="text">Escrow.YOU</Text>
+                <Text fontSize={["4xl", "6xl", "8xl"]} background="linear-gradient(to right, white, cornflowerblue, #9f30cd);" fill="transparent" backgroundClip="text">Escrow.YOU</Text>
             </ChakraBox>
             <ChakraBox animate={textAnimation} transition={transition} opacity="0" mb="10" mt={["5", "4", "2", "0"]}>
                 <Text fontSize="2xl" color="white" textAlign="center" fontFamily="Satoshi-Bold" mb="10">&quot;Securing Trust, Ensuring Transactions&quot;</Text>

@@ -9,6 +9,7 @@ import { ImCross } from "react-icons/im";
 import { FaEthereum } from "react-icons/fa";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import Countdown from "react-countdown";
 
 const EscrowList = ({ escrows, sent, web3button }: { escrows: EscrowModel[], sent: boolean, web3button: boolean }) => {
   const toast = useToast();
@@ -138,20 +139,20 @@ const EscrowList = ({ escrows, sent, web3button }: { escrows: EscrowModel[], sen
           <CardBody backgroundColor={colorMode == "dark" ? "gray.800" : "gray.200"} rounded="lg" mx="5">
             {
                 sent ? (
-                    <HStack justifyContent="space-between">
+                    <HStack justifyContent="space-between" flexWrap="wrap" overflow="auto">
                         <Tooltip hasArrow label='Amount with calculated fees' bg='gray.300' color='black' placement="top">
-                            <Box w="10%" backgroundColor={colorMode == "dark" ? "gray.900" : "gray.100"} rounded="lg" p="2">
-                                <Text fontSize={["sm", "sm", "md", "md"]} ><b>ETH:</b> { escrow.amount }</Text>
+                            <Box w={["40%", "30%", "20%", "10%"]} backgroundColor={colorMode == "dark" ? "gray.900" : "gray.100"} rounded="lg" p="2">
+                                <Text fontSize={["xs", "sm", "md", "md"]} ><b>ETH:</b> { escrow.amount }</Text>
                             </Box>
                         </Tooltip>
-                        <Text fontSize={["sm", "sm", "md", "md"]} whiteSpace="pre">{ escrow.data }</Text>
+                        <Text fontSize={["xs", "sm", "md", "md"]} whiteSpace="pre">{ escrow.data }</Text>
                     </HStack>
                 ) : (
-                    <HStack justifyContent="space-between">
-                        <Text fontSize={["sm", "sm", "md", "md"]} whiteSpace="pre">{ escrow.data }</Text>
+                    <HStack justifyContent="space-between" flexWrap="wrap" overflow="auto">
+                        <Text fontSize={["xs", "sm", "md", "md"]} whiteSpace="pre">{ escrow.data }</Text>
                         <Tooltip hasArrow label='Amount with calculated fees' bg='gray.300' color='black' placement="top">
-                            <Box w="10%" backgroundColor={colorMode == "dark" ? "gray.900" : "gray.100"} rounded="lg" p="2">
-                                <Text fontSize={["sm", "sm", "md", "md"]} ><b>ETH:</b> { escrow.amount }</Text>
+                            <Box w={["40%", "30%", "20%", "10%"]} backgroundColor={colorMode == "dark" ? "gray.900" : "gray.100"} rounded="lg" p="2">
+                                <Text fontSize={["xs", "sm", "md", "md"]} ><b>ETH:</b> { escrow.amount }</Text>
                             </Box>
                         </Tooltip>
                     </HStack>
@@ -166,7 +167,7 @@ const EscrowList = ({ escrows, sent, web3button }: { escrows: EscrowModel[], sen
                             contractAddress={process.env.NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS || ""}
                             contractAbi={ESCROW_ABI}
                             isDisabled={Number(escrow.redeemTime) != 0}
-                            style={{ maxHeight: "2.5rem", color: colorMode == "dark" ? "#171923" : "white", backgroundColor: Number(escrow.redeemTime) != 0 ? "#C53030" : (colorMode == "dark" ? "white" : "#171923")}} 
+                            style={{fontSize:"inherit", maxWidth: "50%", maxHeight: "2.5rem", color: colorMode == "dark" ? "#171923" : "white", backgroundColor: Number(escrow.redeemTime) != 0 ? "#C53030" : (colorMode == "dark" ? "white" : "#171923")}} 
                             onError={(e) => {
                                 if(e.message.includes("Release time")){
                                     toast({description: "Release time still in progress...", status: 'error', position: "top", isClosable: true, duration: 3000});
@@ -179,22 +180,30 @@ const EscrowList = ({ escrows, sent, web3button }: { escrows: EscrowModel[], sen
                             onSuccess={() => {escrow.approved = true; setRefresh(!refresh)}}
                             action={async (contract) => await contract.call("releaseFunds", ["0x" + escrow.topics[2].substring(26), escrow.escrowCounter])}
                         >
-                            Release
-                            {
-                                Number(escrow.redeemTime) != 0 && " on " + new Date(new Date().getTime() + Number(escrow.redeemTime) * 1000).toLocaleDateString(undefined, { hour: "2-digit", minute: "2-digit", hourCycle: "h24"})
-                            }
-                            <FaEthereum size="28" style={{marginLeft: "5%", color: colorMode == "dark" ? "#171923" : "white" }}/>
+                            <HStack justifyContent="space-between" width="100%" px="2">
+                                {
+                                    Number(escrow.redeemTime) == 0
+                                    ? "Release"
+                                    : (
+                                        <VStack gap="1">
+                                            <Text>Release in</Text>
+                                            <Countdown date={new Date(new Date().getTime() + Number(escrow.redeemTime) * 1000)}/>
+                                        </VStack>
+                                    )
+                                }
+                                <FaEthereum size={"26"} style={{color: colorMode == "dark" ? "#171923" : "white" }}/>
+                            </HStack>
                         </Web3Button>
                     )
                 }
                 <HStack fontSize={["3xs", "2xs", "xs", "xs"]} py="2" width="100%" justifyContent={"space-between"}>
-                <Link isExternal color="main" href={process.env.NEXT_PUBLIC_CHAIN_SCAN_URL + "/" + escrow.transactionHash}>
-                    <ExternalLinkIcon style={{color: colorMode == "dark" ? "white" : "black"}} mr="1"/>
-                    { escrow.transactionHash }
-                </Link>
-                <Text>
-                    { new Date(parseInt(escrow.timeStamp, 16) * 1000).toLocaleDateString(undefined, { hour: "2-digit", minute: "2-digit", hourCycle: "h24"}) }
-                </Text>
+                    <Link isExternal color="main" href={process.env.NEXT_PUBLIC_CHAIN_SCAN_URL + "/" + escrow.transactionHash}>
+                        <ExternalLinkIcon style={{color: colorMode == "dark" ? "white" : "black"}} mr="1"/>
+                        { escrow.transactionHash.substring(0, 26) }...
+                    </Link>
+                    <Text>
+                        { new Date(parseInt(escrow.timeStamp, 16) * 1000).toLocaleDateString(undefined, { hour: "2-digit", minute: "2-digit", hourCycle: "h24"}) }
+                    </Text>
                 </HStack>
             </VStack>
           </CardFooter>
